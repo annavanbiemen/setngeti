@@ -1,0 +1,10 @@
+<phpunit>
+  <php>
+    <includePath>../library</includePath>
+  </php>
+  <testsuites>
+    <testsuite name="SetnGeti">
+      <directory>.</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

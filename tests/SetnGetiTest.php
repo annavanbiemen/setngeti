@@ -49,9 +49,9 @@ class SetnGetiTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $this->assertEquals(123, $this->account->getId());
-        $this->assertEquals('John', $this->account->getFirstname());
-        $this->assertEquals('Doe', $this->account->getLastname());
+        $this->assertSame(123, $this->account->getId());
+        $this->assertSame('John', $this->account->getFirstname());
+        $this->assertSame('Doe', $this->account->getLastname());
     }
 
     /**
@@ -87,14 +87,14 @@ class SetnGetiTest extends PHPUnit_Framework_TestCase
     public function testSet()
     {
         $result = $this->account->setFirstname('Alan');
-        $this->assertAttributeEquals('Alan', 'firstname', $this->account);
+        $this->assertAttributeSame('Alan', 'firstname', $this->account);
         $this->assertSame($this->account, $result);
 
         $this->account->setLastname('Turing');
-        $this->assertAttributeEquals('Turing', 'lastname', $this->account);
+        $this->assertAttributeSame('Turing', 'lastname', $this->account);
 
         $this->account->setPassword('SomeNewSecret');
-        $this->assertAttributeEquals('SomeNewSecret', 'password', $this->account);
+        $this->assertAttributeSame('SomeNewSecret', 'password', $this->account);
     }
 
     /**

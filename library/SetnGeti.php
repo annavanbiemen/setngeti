@@ -18,6 +18,9 @@
  *
  * Add 'use SetnGeti;' to your class and @get and @set tags to your property
  * docblocks to add getters and setters for those properties.
+ * 
+ * @method mixed get<property>() get<property>() Gets a property value
+ * @method object set<property>() set<property(mixed value) Sets a property value and returns this object instance
  */
 trait SetnGeti
 {
@@ -41,7 +44,7 @@ trait SetnGeti
      * @param string    $property   Property name
      * @param mixed     $value      Property value
      * @return object               This object instance (allows method chaining)
-     * @throws ReflectionException  When the property cannot be set
+     * @throws LogicException       When the property cannot be set
      */
     protected function sgSet($property, $value)
     {
@@ -57,7 +60,7 @@ trait SetnGeti
      *
      * @param string    $property   Property name
      * @return mixed                Property value
-     * @throws ReflectionException  When the property cannot be red
+     * @throws LogicException       When the property cannot be red
      */
     protected function sgGet($property)
     {

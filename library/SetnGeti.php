@@ -23,19 +23,16 @@ trait SetnGeti
 {
 
     /**
-     * Tests that the property exists and has the required tag in its docblock
+     * Reads a property comment
      *
      * @param string    $property   Property name
-     * @param string    $tag        Tag (without leading @)
-     * @throws LogicException       When the tag isn't found in the docblock
+     * @return string               Property comment
      * @throws ReflectionException  When the property isn't found
      */
-    protected function sgRequirePropertyTag($property, $tag)
+    protected function sgReadPropertyComment($property)
     {
         $reflection = new ReflectionProperty(__CLASS__, $property);
-        if (preg_match("/\\s@$tag\\s/", $reflection->getDocComment()) == 0) {
-            throw new LogicException('Operation not allowed on this property');
-        }
+        return $reflection->getDocComment();
     }
 
     /**
@@ -44,10 +41,13 @@ trait SetnGeti
      * @param string    $property   Property name
      * @param mixed     $value      Property value
      * @return object               This object instance (allows method chaining)
+     * @throws ReflectionException  When the property cannot be set
      */
     protected function sgSet($property, $value)
     {
-        $this->sgRequirePropertyTag($property, 'set');
+        if (preg_match('/\\s@set\\s/', $this->sgReadPropertyComment($property)) == 0) {
+            throw new LogicException('Property does not allow set operation');
+        }
         $this->$property = $value;
         return $this;
     }
@@ -57,10 +57,13 @@ trait SetnGeti
      *
      * @param string    $property   Property name
      * @return mixed                Property value
+     * @throws ReflectionException  When the property cannot be red
      */
     protected function sgGet($property)
     {
-        $this->sgRequirePropertyTag($property, 'get');
+        if (preg_match('/\\s@get\\s/', $this->sgReadPropertyComment($property)) == 0) {
+            throw new LogicException('Property does not allow get operation');
+        }
         return $this->$property;
     }
 

@@ -17,6 +17,14 @@ namespace SetnGeti;
 
 /**
  * Basic SetnGeti trait
+ *
+ * By itself this trait won't change the accessebility of your properties. If
+ * you want SetnGeti to do this for you, consider using the Methods or
+ * Properties traits.
+ *
+ * Using this trait directly will only give you manual access to the core
+ * methods of SetnGeti. You would have to hook into PHP's magic methods yourself
+ * and call sgGet or sgSet to implement property access using SetnGeti.
  */
 trait Basic
 {

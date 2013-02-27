@@ -16,15 +16,15 @@
 namespace SetnGeti;
 
 /**
- * SetnGeti Basic testcase
+ * SetnGeti Methods testcase
  */
 class MethodsTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * Account test object fixture
+     * Test subject fixture
      *
-     * @var Account
+     * @var MethodsSubject
      */
     private $subject;
 

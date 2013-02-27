@@ -22,9 +22,9 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * Account test object fixture
+     * Test subject fixture
      *
-     * @var Account
+     * @var PropertiesSubject
      */
     private $subject;
 

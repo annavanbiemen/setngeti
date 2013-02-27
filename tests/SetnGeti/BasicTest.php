@@ -22,18 +22,18 @@ class BasicTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * Account test object fixture
+     * Test subject fixture
      *
-     * @var Account
+     * @var BasicSubject
      */
-    protected $account;
+    private $subject;
 
     /**
      * Loads the fixture
      */
     public function setUp()
     {
-        $this->account = new BasicSubject();
+        $this->subject = new BasicSubject();
     }
 
     /**
@@ -41,7 +41,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        unset($this->account);
+        unset($this->subject);
     }
 
     /**
@@ -49,9 +49,9 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $this->assertSame(123, $this->account->sgGet('id'));
-        $this->assertSame('John', $this->account->sgGet('firstname'));
-        $this->assertSame('Doe', $this->account->sgGet('lastname'));
+        $this->assertSame(123, $this->subject->sgGet('id'));
+        $this->assertSame('John', $this->subject->sgGet('firstname'));
+        $this->assertSame('Doe', $this->subject->sgGet('lastname'));
     }
 
     /**
@@ -60,7 +60,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testGetInaccessable()
     {
         $this->setExpectedException('LogicException');
-        $this->account->sgGet('password');
+        $this->subject->sgGet('password');
     }
 
     /**
@@ -69,7 +69,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testGetUndocumented()
     {
         $this->setExpectedException('LogicException');
-        $this->account->sgGet('undocumented');
+        $this->subject->sgGet('undocumented');
     }
 
     /**
@@ -78,7 +78,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testGetNonExistent()
     {
         $this->setExpectedException('ReflectionException');
-        $this->account->sgGet('someNoneExistentProperty');
+        $this->subject->sgGet('someNoneExistentProperty');
     }
 
     /**
@@ -86,15 +86,15 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $result = $this->account->sgSet('firstname', 'Alan');
-        $this->assertAttributeSame('Alan', 'firstname', $this->account);
-        $this->assertSame($this->account, $result);
+        $result = $this->subject->sgSet('firstname', 'Alan');
+        $this->assertAttributeSame('Alan', 'firstname', $this->subject);
+        $this->assertSame($this->subject, $result);
 
-        $this->account->sgSet('lastname', 'Turing');
-        $this->assertAttributeSame('Turing', 'lastname', $this->account);
+        $this->subject->sgSet('lastname', 'Turing');
+        $this->assertAttributeSame('Turing', 'lastname', $this->subject);
 
-        $this->account->sgSet('password', 'SomeNewSecret');
-        $this->assertAttributeSame('SomeNewSecret', 'password', $this->account);
+        $this->subject->sgSet('password', 'SomeNewSecret');
+        $this->assertAttributeSame('SomeNewSecret', 'password', $this->subject);
     }
 
     /**
@@ -103,7 +103,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testSetInaccessable()
     {
         $this->setExpectedException('LogicException');
-        $this->account->sgSet('id', 1234);
+        $this->subject->sgSet('id', 1234);
     }
 
     /**
@@ -112,7 +112,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testSetUndocumented()
     {
         $this->setExpectedException('LogicException');
-        $this->account->sgSet('undocumented', 'whatever');
+        $this->subject->sgSet('undocumented', 'whatever');
     }
 
     /**
@@ -121,7 +121,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testSetNonExistent()
     {
         $this->setExpectedException('ReflectionException');
-        $this->account->sgSet('someNoneExistentProperty', 'whatever');
+        $this->subject->sgSet('someNoneExistentProperty', 'whatever');
     }
 
     /**
@@ -134,7 +134,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterScalar($value, $type, $expected)
     {
-        $this->assertSame($expected, $this->account->sgFilter($value, $type));
+        $this->assertSame($expected, $this->subject->sgFilter($value, $type));
     }
 
     /**

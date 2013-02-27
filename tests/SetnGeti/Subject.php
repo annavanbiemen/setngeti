@@ -22,7 +22,7 @@ trait Subject
 {
 
     /**
-     * Account id (readonly)
+     * Person identifier (readonly)
      *
      * @var integer
      * @get

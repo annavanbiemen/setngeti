@@ -18,11 +18,8 @@ namespace SetnGeti;
 /**
  * SetnGeti Methods trait
  *
- * Add 'use SetnGeti;' to your class and @get and @set tags to your property
- * docblocks to add getters and setters for those properties.
- *
- * @method mixed    get<property>() get<property>()             Gets a property value
- * @method object   set<property>() set<property(mixed value)   Sets a property value and returns this object instance
+ * Add 'use \SetnGeti\Properties;' to your class and @get and @set tags to your
+ * property docblocks to allow public access to those properties.
  */
 trait Properties
 {

@@ -18,8 +18,8 @@ namespace SetnGeti;
 /**
  * SetnGeti Methods trait
  *
- * Add 'use SetnGeti;' to your class and @get and @set tags to your property
- * docblocks to add getters and setters for those properties.
+ * Add 'use \SetnGeti\Methods;' to your class and @get and @set tags to your
+ * property docblocks to add getters and setters for those properties.
  *
  * @method mixed    get<property>() get<property>()             Gets a property value
  * @method object   set<property>() set<property(mixed value)   Sets a property value and returns this object instance

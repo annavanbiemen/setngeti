@@ -22,7 +22,7 @@ class PropertiesSubject
 {
 
     /**
-     * Use SetnGeti Methods
+     * Use SetnGeti Properties
      */
     use Properties;
 

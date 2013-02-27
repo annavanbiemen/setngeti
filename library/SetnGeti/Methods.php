@@ -38,6 +38,7 @@ trait Methods
      * @param string    $method         Method
      * @param array     $arguments      Arguments
      * @return mixed                    Getter or setter return value
+     * @throws \LogicException          When the property cannot be red or set
      * @throws \BadMethodCallException  When the method is not a getter or setter
      */
     public function __call($method, array $arguments)

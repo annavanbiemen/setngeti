@@ -77,7 +77,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNonExistent()
     {
-        $this->setExpectedException('ReflectionException');
+        $this->setExpectedException('LogicException');
         $this->subject->sgGet('someNoneExistentProperty');
     }
 
@@ -120,7 +120,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetNonExistent()
     {
-        $this->setExpectedException('ReflectionException');
+        $this->setExpectedException('LogicException');
         $this->subject->sgSet('someNoneExistentProperty', 'whatever');
     }
 

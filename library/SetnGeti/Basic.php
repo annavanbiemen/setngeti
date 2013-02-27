@@ -34,13 +34,17 @@ trait Basic
      *
      * @param string    $property       Property name
      * @return string                   Property comment
-     * @throws \ReflectionException     When the property isn't found
+     * @throws \LogicException          When the property isn't found
      */
     protected function sgReadPropertyComment($property)
     {
-        $reflection = new \ReflectionProperty(__CLASS__, $property);
+        try {
+            $reflection = new \ReflectionProperty(__CLASS__, $property);
 
-        return $reflection->getDocComment();
+            return $reflection->getDocComment();
+        } catch (\ReflectionException $e) {
+            throw new \LogicException('Property does not exist', 0, $e);
+        }
     }
 
     /**

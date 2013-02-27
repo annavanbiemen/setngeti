@@ -13,7 +13,7 @@
  * @link      http://github.com/guidovanbiemen/setngeti/ SetnGeti
  */
 
-require_once 'SetnGeti.php';
+namespace SetnGeti;
 
 /**
  * Test subject for SetnGeti tests
@@ -21,7 +21,7 @@ require_once 'SetnGeti.php';
 class Account
 {
 
-    use SetnGeti;
+    use Basic;
 
     /**
      * Account id (readonly)

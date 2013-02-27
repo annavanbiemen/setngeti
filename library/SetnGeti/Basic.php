@@ -13,8 +13,10 @@
  * @link      http://github.com/guidovanbiemen/setngeti/ SetnGeti
  */
 
+namespace SetnGeti;
+
 /**
- * SetnGeti trait
+ * Basic SetnGeti trait
  *
  * Add 'use SetnGeti;' to your class and @get and @set tags to your property
  * docblocks to add getters and setters for those properties.
@@ -22,7 +24,7 @@
  * @method mixed get<property>() get<property>() Gets a property value
  * @method object set<property>() set<property(mixed value) Sets a property value and returns this object instance
  */
-trait SetnGeti
+trait Basic
 {
 
     /**
@@ -34,7 +36,7 @@ trait SetnGeti
      */
     protected function sgReadPropertyComment($property)
     {
-        $reflection = new ReflectionProperty(__CLASS__, $property);
+        $reflection = new \ReflectionProperty(__CLASS__, $property);
         return $reflection->getDocComment();
     }
 
@@ -77,7 +79,7 @@ trait SetnGeti
             return $value;
         }
 
-        throw new InvalidArgumentException(sprintf('%s expected, but %s given', $type, $originalType));
+        throw new \InvalidArgumentException(sprintf('%s expected, but %s given', $type, $originalType));
     }
 
     /**
@@ -92,7 +94,7 @@ trait SetnGeti
     {
         $comment = $this->sgReadPropertyComment($property);
         if (preg_match('/\\s@set\\s/', $comment) == 0) {
-            throw new LogicException('Property does not allow set operation');
+            throw new \LogicException('Property does not allow set operation');
         }
         $parameters = array();
         if (preg_match('/\\s@var\\s([\\w\\\\]+)\\s/', $comment, $parameters)) {
@@ -114,7 +116,7 @@ trait SetnGeti
     protected function sgGet($property)
     {
         if (preg_match('/\\s@get\\s/', $this->sgReadPropertyComment($property)) == 0) {
-            throw new LogicException('Property does not allow get operation');
+            throw new \LogicException('Property does not allow get operation');
         }
 
         return $this->$property;
@@ -137,7 +139,7 @@ trait SetnGeti
         if (strpos($method, 'get') === 0) {
             return $this->sgGet($property);
         }
-        throw new BadMethodCallException('Method does not exist');
+        throw new \BadMethodCallException('Method does not exist');
     }
 
 }

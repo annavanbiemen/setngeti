@@ -13,12 +13,12 @@
  * @link      http://github.com/guidovanbiemen/setngeti/ SetnGeti
  */
 
-require_once 'Account.php';
+namespace SetnGeti;
 
 /**
- * SetnGeti testcase
+ * SetnGeti Basic testcase
  */
-class SetnGetiTest extends PHPUnit_Framework_TestCase
+class BasicTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -155,7 +155,7 @@ class SetnGetiTest extends PHPUnit_Framework_TestCase
      */
     protected function invokeFilter($value, $type)
     {
-        $filter = new ReflectionMethod($this->account, 'sgFilter');
+        $filter = new \ReflectionMethod($this->account, 'sgFilter');
         $filter->setAccessible(true);
 
         return $filter->invoke($this->account, $value, $type);

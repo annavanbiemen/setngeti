@@ -1,10 +1,10 @@
-<phpunit>
+<phpunit bootstrap="bootstrap.php">
   <php>
     <includePath>../library</includePath>
   </php>
   <testsuites>
     <testsuite name="SetnGeti">
-      <directory>.</directory>
+      <directory>SetnGeti</directory>
     </testsuite>
   </testsuites>
 </phpunit>

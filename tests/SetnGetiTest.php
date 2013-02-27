@@ -13,7 +13,7 @@
  * @link      http://github.com/guidovanbiemen/setngeti/ SetnGeti
  */
 
-require_once('Account.php');
+require_once 'Account.php';
 
 /**
  * SetnGeti testcase
@@ -131,6 +131,48 @@ class SetnGetiTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('BadMethodCallException');
         $this->account->someNonExistingMethod();
+    }
+
+    /**
+     * Tests filtering
+     *
+     * @dataProvider filterScalarData
+     * @param mixed     $value      Value to be filtered
+     * @param string    $type       Type to be enforced
+     * @param mixed     $expected   Expected result after normalization
+     */
+    public function testFilterScalar($value, $type, $expected)
+    {
+        $this->assertEquals($expected, $this->invokeFilter($value, $type));
+    }
+
+    /**
+     * Invokes the protected sgFilter method
+     *
+     * @param mixed     $value      Value to be filtered
+     * @param string    $type       Type to be enforced
+     * @return mixed                Filtered value
+     */
+    protected function invokeFilter($value, $type)
+    {
+        $filter = new ReflectionMethod($this->account, 'sgFilter');
+        $filter->setAccessible(true);
+
+        return $filter->invoke($this->account, $value, $type);
+    }
+
+    /**
+     * Filter testdata
+     *
+     * @return array                Filter testdata
+     */
+    public function filterScalarData()
+    {
+        //  VALUE           TYPE                EXPECTED
+        return array(
+            [0,             'string',           '0'],
+            ['0',           'int',              0],
+        );
     }
 
 }

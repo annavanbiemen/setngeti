@@ -18,7 +18,7 @@
  *
  * Add 'use SetnGeti;' to your class and @get and @set tags to your property
  * docblocks to add getters and setters for those properties.
- * 
+ *
  * @method mixed get<property>() get<property>() Gets a property value
  * @method object set<property>() set<property(mixed value) Sets a property value and returns this object instance
  */
@@ -39,6 +39,48 @@ trait SetnGeti
     }
 
     /**
+     * Ensures that a value has the specified type
+     *
+     * @param mixed     $value      Value to be filtered
+     * @param string    $type       Type to be enforced
+     * @return mixed                Filtered value
+     * @throws InvalidArgumentException When the value cannot match the required type.
+     */
+    protected function sgFilter($value, $type)
+    {
+        // Scalar type casting
+        $originalType = gettype($value);
+        switch ($type) {
+            case '':
+            case 'mixed':
+            case $originalType:
+                return $value;
+            case 'boolean':
+            case 'bool':
+            case 'integer':
+            case 'int':
+            case 'double':
+            case 'string':
+            case 'array':
+            case 'object':
+            case 'resource':
+            case 'null':
+                settype($value, $type);
+                return $value;
+        }
+
+        // Object type validation
+        if ($type[0] != '\\') {
+            $type = '\\' . __NAMESPACE__ . '\\' . $type;
+        }
+        if ($originalType == 'object' && $value instanceof $type) {
+            return $value;
+        }
+
+        throw new InvalidArgumentException(sprintf('%s expected, but %s given', $type, $originalType));
+    }
+
+    /**
      * Sets a property to a specified value
      *
      * @param string    $property   Property name
@@ -48,10 +90,17 @@ trait SetnGeti
      */
     protected function sgSet($property, $value)
     {
-        if (preg_match('/\\s@set\\s/', $this->sgReadPropertyComment($property)) == 0) {
+        $comment = $this->sgReadPropertyComment($property);
+        if (preg_match('/\\s@set\\s/', $comment) == 0) {
             throw new LogicException('Property does not allow set operation');
         }
-        $this->$property = $value;
+        $parameters = array();
+        if (preg_match('/\\s@var\\s([\\w\\\\]+)\\s/', $comment, $parameters)) {
+            $this->$property = $this->sgFilter($value, $parameters[1]);
+        } else {
+            $this->$property = $value;
+        }
+
         return $this;
     }
 
@@ -67,6 +116,7 @@ trait SetnGeti
         if (preg_match('/\\s@get\\s/', $this->sgReadPropertyComment($property)) == 0) {
             throw new LogicException('Property does not allow get operation');
         }
+
         return $this->$property;
     }
 

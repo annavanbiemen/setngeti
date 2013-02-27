@@ -13,9 +13,22 @@
  * @link      http://github.com/guidovanbiemen/setngeti/ SetnGeti
  */
 
-spl_autoload_register(function ($class) {
-    $filename = stream_resolve_include_path(ltrim(str_replace('\\', '/', $class), '/') . '.php');
-    if ($filename) {
-        include $filename;
-    }
-});
+namespace SetnGeti;
+
+/**
+ * Testing subject with SetnGeti Properties
+ */
+class PropertiesSubject
+{
+
+    /**
+     * Use SetnGeti Methods
+     */
+    use Properties;
+
+    /**
+     * Use the Subject trait
+     */
+    use Subject;
+
+}

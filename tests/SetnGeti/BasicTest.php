@@ -33,7 +33,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->account = new Account();
+        $this->account = new BasicSubject();
     }
 
     /**
@@ -49,9 +49,9 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $this->assertSame(123, $this->account->getId());
-        $this->assertSame('John', $this->account->getFirstname());
-        $this->assertSame('Doe', $this->account->getLastname());
+        $this->assertSame(123, $this->account->sgGet('id'));
+        $this->assertSame('John', $this->account->sgGet('firstname'));
+        $this->assertSame('Doe', $this->account->sgGet('lastname'));
     }
 
     /**
@@ -60,7 +60,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testGetInaccessable()
     {
         $this->setExpectedException('LogicException');
-        $this->account->getPassword();
+        $this->account->sgGet('password');
     }
 
     /**
@@ -69,7 +69,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testGetUndocumented()
     {
         $this->setExpectedException('LogicException');
-        $this->account->getUndocumented();
+        $this->account->sgGet('undocumented');
     }
 
     /**
@@ -78,7 +78,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testGetNonExistent()
     {
         $this->setExpectedException('ReflectionException');
-        $this->account->getSomeNoneExistentProperty();
+        $this->account->sgGet('someNoneExistentProperty');
     }
 
     /**
@@ -86,14 +86,14 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $result = $this->account->setFirstname('Alan');
+        $result = $this->account->sgSet('firstname', 'Alan');
         $this->assertAttributeSame('Alan', 'firstname', $this->account);
         $this->assertSame($this->account, $result);
 
-        $this->account->setLastname('Turing');
+        $this->account->sgSet('lastname', 'Turing');
         $this->assertAttributeSame('Turing', 'lastname', $this->account);
 
-        $this->account->setPassword('SomeNewSecret');
+        $this->account->sgSet('password', 'SomeNewSecret');
         $this->assertAttributeSame('SomeNewSecret', 'password', $this->account);
     }
 
@@ -103,7 +103,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testSetInaccessable()
     {
         $this->setExpectedException('LogicException');
-        $this->account->setId(1234);
+        $this->account->sgSet('id', 1234);
     }
 
     /**
@@ -112,7 +112,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testSetUndocumented()
     {
         $this->setExpectedException('LogicException');
-        $this->account->setUndocumented('whatever');
+        $this->account->sgSet('undocumented', 'whatever');
     }
 
     /**
@@ -121,44 +121,20 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     public function testSetNonExistent()
     {
         $this->setExpectedException('ReflectionException');
-        $this->account->setSomeNoneExistentProperty('whatever');
-    }
-
-    /**
-     * Tests the behaviour when calling a method that isn't a getter or setter
-     */
-    public function testBadMethod()
-    {
-        $this->setExpectedException('BadMethodCallException');
-        $this->account->someNonExistingMethod();
+        $this->account->sgSet('someNoneExistentProperty', 'whatever');
     }
 
     /**
      * Tests filtering
      *
-     * @dataProvider filterScalarData
+     * @dataProvider                filterScalarData
      * @param mixed     $value      Value to be filtered
      * @param string    $type       Type to be enforced
      * @param mixed     $expected   Expected result after normalization
      */
     public function testFilterScalar($value, $type, $expected)
     {
-        $this->assertEquals($expected, $this->invokeFilter($value, $type));
-    }
-
-    /**
-     * Invokes the protected sgFilter method
-     *
-     * @param mixed     $value      Value to be filtered
-     * @param string    $type       Type to be enforced
-     * @return mixed                Filtered value
-     */
-    protected function invokeFilter($value, $type)
-    {
-        $filter = new \ReflectionMethod($this->account, 'sgFilter');
-        $filter->setAccessible(true);
-
-        return $filter->invoke($this->account, $value, $type);
+        $this->assertSame($expected, $this->account->sgFilter($value, $type));
     }
 
     /**

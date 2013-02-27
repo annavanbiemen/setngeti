@@ -16,12 +16,10 @@
 namespace SetnGeti;
 
 /**
- * Test subject for SetnGeti tests
+ * Generic testing subject trait
  */
-class Account
+trait Subject
 {
-
-    use Basic;
 
     /**
      * Account id (readonly)

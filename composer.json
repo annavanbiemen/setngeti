@@ -1,0 +1,24 @@
+{
+    "name": "guidovanbiemen/setngeti",
+    "type": "library",
+    "description": "Getters and setters for PHP 5.4",
+    "keywords": ["get", "set", "getters", "setters", "properties", "methods"],
+    "homepage": "http://github.com/guidovanbiemen/setngeti",
+    "license": "LGPL-3.0",
+    "authors": [
+        {
+            "name": "Guido van Biemen",
+            "email": "guidovanbiemen@gmail.com",
+            "homepage": "https://github.com/guidovanbiemen",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "SetnGeti": "library"
+        }
+    }
+}

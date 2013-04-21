@@ -154,12 +154,12 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests filtering
      *
-     * @dataProvider                filterScalarData
+     * @dataProvider                filterData
      * @param mixed     $value      Value to be filtered
      * @param string    $type       Type to be enforced
      * @param mixed     $expected   Expected result after normalization
      */
-    public function testFilterScalar($value, $type, $expected)
+    public function testFilter($value, $type, $expected)
     {
         $this->assertSame($expected, $this->subject->sgFilter($value, $type));
     }
@@ -169,18 +169,61 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      *
      * @return array                Filter testdata
      */
-    public function filterScalarData()
+    public function filterData()
     {
-        $date = new \DateTime('now');
+        $date    = new \DateTime('now');
+        $subject = new BasicSubject();
 
         //  VALUE           TYPE                EXPECTED
         return array(
             [0,             'string',           '0'],
             ['0',           'int',              0],
             [$date,         '\\DateTime',       $date],
-            //[$date,         'DateTime',         $date],
+            [$subject,      'BasicSubject',     $subject],
             [$date,         'object',           $date],
         );
+    }
+
+
+    /**
+     * Tests filtering
+     *
+     * @dataProvider                filterExceptionData
+     * @param mixed     $value      Value to be filtered
+     * @param string    $type       Type to be enforced
+     */
+    public function testFilterException($value, $type)
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->subject->sgFilter($value, $type);
+    }
+
+    /**
+     * Filter exception testdata
+     *
+     * @return array                Filter exception testdata
+     */
+    public function filterExceptionData()
+    {
+        $subject = new BasicSubject();
+
+        //  VALUE           TYPE
+        return array(
+            [null,          '\\DateTime'],
+            [$subject,      'SomeOtherClass'],
+        );
+    }
+
+    public function testGetMethod()
+    {
+        $this->assertSame('John Doe', $this->subject->sgGet('fullname'));
+    }
+
+    public function testSetMethod()
+    {
+        $this->subject->sgSet('fullname', 'Frodo Baggins');
+        $this->assertSame('Frodo', $this->subject->sgGet('firstname'));
+        $this->assertSame('Baggins', $this->subject->sgGet('lastname'));
     }
 
 }

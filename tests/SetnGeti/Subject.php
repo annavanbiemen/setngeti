@@ -51,4 +51,26 @@ trait Subject
 
     private $undocumented;
 
+    /**
+     * Full name pseudo property
+     *
+     * @var string
+     * @get getFullName
+     * @set setFullName
+     */
+    private $fullname;
+
+    public function getFullname()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function setFullname($fullname)
+    {
+        $matches = array();
+        preg_match('/^(.+)\\s+(.+)$/', $fullname, $matches);
+        $this->firstname = $matches[1];
+        $this->lastname  = $matches[2];
+    }
+
 }

@@ -68,9 +68,10 @@ trait Subject
     public function setFullname($fullname)
     {
         $matches = array();
-        preg_match('/^(.+)\\s+(.+)$/', $fullname, $matches);
-        $this->firstname = $matches[1];
-        $this->lastname  = $matches[2];
+        if (preg_match('/^(.+)\\s+(.+)$/', $fullname, $matches)) {
+            $this->firstname = $matches[1];
+            $this->lastname  = $matches[2];
+        }
     }
 
 }

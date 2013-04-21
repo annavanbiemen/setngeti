@@ -45,6 +45,33 @@ class BasicTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests comment reading under normal circumstances
+     */
+    public function testComment()
+    {
+        $this->assertSame('/** @set @get */', $this->subject->sgComment('lastname'));
+    }
+
+    /**
+     * Tests comment reading for a property without documentation
+     */
+    public function testCommentUndocumented()
+    {
+        $this->setExpectedException('LogicException');
+        $this->subject->sgGet('undocumented');
+    }
+
+    /**
+     * Tests tag interpretation inside comments
+     */
+    public function testTag()
+    {
+        $this->assertTrue($this->subject->sgTag("/** @set @get */", 'get'));
+        $this->assertFalse($this->subject->sgTag("/** @set @get */", 'var'));
+        $this->assertSame('array', $this->subject->sgTag("/** @set @get @var array */", 'var'));
+    }
+
+    /**
      * Tests the getter under normal circumstances
      */
     public function testGet()
@@ -144,10 +171,15 @@ class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function filterScalarData()
     {
+        $date = new \DateTime('now');
+
         //  VALUE           TYPE                EXPECTED
         return array(
             [0,             'string',           '0'],
             ['0',           'int',              0],
+            [$date,         '\\DateTime',       $date],
+            //[$date,         'DateTime',         $date],
+            [$date,         'object',           $date],
         );
     }
 

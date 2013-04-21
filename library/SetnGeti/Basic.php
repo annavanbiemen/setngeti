@@ -36,7 +36,7 @@ trait Basic
      * @return string                   Property comment
      * @throws \LogicException          When the property isn't found
      */
-    protected function sgReadPropertyComment($property)
+    protected function sgComment($property)
     {
         try {
             $reflection = new \ReflectionProperty(__CLASS__, $property);
@@ -44,6 +44,26 @@ trait Basic
             return $reflection->getDocComment();
         } catch (\ReflectionException $e) {
             throw new \LogicException('Property does not exist', 0, $e);
+        }
+    }
+
+    /**
+     * Reads a tag from a property comment
+     *
+     * @param string    $comment        Property comment
+     * @param string    $tag            Tag
+     * @param string    $default        Default tag value (optional)
+     * @return boolean|string           False if not found, or string/true when found
+     */
+    protected function sgTag($comment, $tag, $default = true)
+    {
+        $parameters = array();
+        if (!preg_match('/\\s@' . $tag . '(\\s[\\w\\\\]+)?\\s/', $comment, $parameters)) {
+            return false;
+        } elseif (count($parameters) == 2) {
+            return trim($parameters[1]);
+        } else {
+            return $default;
         }
     }
 
@@ -99,19 +119,19 @@ trait Basic
      */
     protected function sgSet($property, $value)
     {
-        $comment = $this->sgReadPropertyComment($property);
-        if (preg_match('/\\s@set\\s/', $comment) == 0) {
+        $comment = $this->sgComment($property);
+        $set = $this->sgTag($comment, 'set');
+        $var = $this->sgTag($comment, 'var');
+
+        if ($set === true) {
+            $this->$property = $var ? $this->sgFilter($value, $var) : $value;
+
+            return $this;
+        } elseif (is_string($set)) {
+            return $this->$set($value);
+        } else {
             throw new \LogicException('Property does not allow set operation');
         }
-
-        $parameters = array();
-        if (preg_match('/\\s@var\\s([\\w\\\\]+)\\s/', $comment, $parameters)) {
-            $this->$property = $this->sgFilter($value, $parameters[1]);
-        } else {
-            $this->$property = $value;
-        }
-
-        return $this;
     }
 
     /**
@@ -123,11 +143,15 @@ trait Basic
      */
     protected function sgGet($property)
     {
-        if (preg_match('/\\s@get\\s/', $this->sgReadPropertyComment($property)) == 0) {
+        $get = $this->sgTag($this->sgComment($property), 'get');
+
+        if ($get === true) {
+            return $this->$property;
+        } elseif (is_string($get)) {
+            return $this->$get();
+        } else {
             throw new \LogicException('Property does not allow get operation');
         }
-
-        return $this->$property;
     }
 
 }

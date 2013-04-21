@@ -25,7 +25,8 @@ class BasicSubject
      * Use SetnGeti Basic with its internals exposed
      */
     use Basic {
-        sgReadPropertyComment as public;
+        sgComment as public;
+        sgTag as public;
         sgFilter as public;
         sgGet as public;
         sgSet as public;

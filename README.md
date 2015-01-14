@@ -9,30 +9,32 @@ By using SetnGeti methods, you can eliminate the effort that usually goes into
 writing needless amounts of get and set methods by just adding an @get and/or
 @set tag to the properties you'd like to expose:
 
-    class User
-    {
+```php
+class User
+{
 
-        use \SetnGeti\Methods;
+    use \SetnGeti\Methods;
+    
+    /**
+    * Sample property
+    *
+    * @get
+    * @set
+    * @var string
+    */
+    private $username;
 
-        /**
-         * Sample property
-         *
-         * @get
-         * @set
-         * @var string
-         */
-        private $username;
+}
 
-    }
+$user = new User();
+$user->setUsername('johndoe');
 
-    $user = new User();
-    $user->setUsername('johndoe');
-
-    echo $user->getUsername();
+echo $user->getUsername();
+```
 
 By adding only an @get tag to a property, you can ensure that the property will
 only be available for read-only access. On the other hand, a property with just
-and @set tag will be write only.
+an @set tag will be write only.
 
 Trying to access a setMethod() on a property without @set, or getMethod() for a
 property without @get, you will cause a RuntimeException to be thrown.
@@ -46,10 +48,8 @@ types:
 * A class name
 * An interface name
 * mixed
-* boolean
-* bool
-* integer
-* int
+* boolean (or bool)
+* integer (or int)
 * double
 * string
 * array
@@ -69,16 +69,21 @@ object is passed, an InvalidArgumentException will be thrown.
 The automatic setter methods of SetnGeti allow method chaining by returning the
 owner object by default. This allows you to write code like:
 
-    $user->setUsername('johndoe')
-         ->setPassword('secret')
-         ->store();
+```php
+$user->setUsername('johndoe')
+     ->setPassword('secret')
+     ->store();
+```
 
 ## Property access instead of getter and setter methods
 
 As an alternative to having getter and setter methods added to your properties
 you might want to access your properties from the outside without marking them
-public so you can still perform validation
+public so you can still control access to them.
 
+To allow for this, add the \SetnGeti\Properties trait instead. Now you can
+access private an protected properties as long as you've added the appropriate
+@get and @set tags.
 
 I'm not saying this approach is generally a good idea, but with a legacy code
 base depending on public object properties, this might be a reasonable option
